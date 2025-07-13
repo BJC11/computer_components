@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shadow Circuit - Power Core Challenge</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #ffffff;
+      color: #000000;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    h2, h3 {
+      color: #003366;
+    }
+    .question {
+      display: none;
+      margin-top: 20px;
+    }
+    .question.active {
+      display: block;
+    }
+    .feedback {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .correct {
+      color: green;
+    }
+    .incorrect {
+      color: red;
+    }
+    select, button {
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 1rem;
+    }
+    #passcode {
+      display: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #003366;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h2>PHASE 1: Power Core — Identify the Right Parts</h2>
+  <p>Explore the PC parts in front of you. Use your sense of touch and memory to answer each question below.</p>
+
+  <div class="question active" id="q1">
+    <label for="question1">1. Which part stores short-term memory?</label>
+    <select id="question1">
+      <option value="">--Choose--</option>
+      <option value="RAM">RAM</option>
+      <option value="CPU">CPU</option>
+      <option value="Hard Drive">Hard Drive</option>
+    </select>
+    <div class="feedback" id="feedback1"></div>
+  </div>
+
+  <div class="question" id="q2">
+    <label for="question2">2. Which part powers the system?</label>
+    <select id="question2">
+      <option value="">--Choose--</option>
+      <option value="Power Supply">Power Supply</option>
+      <option value="CPU">CPU</option>
+      <option value="RAM">RAM</option>
+    </select>
+    <div class="feedback" id="feedback2"></div>
+  </div>
+
+  <div class="question" id="q3">
+    <label for="question3">3. Which part connects all others?</label>
+    <select id="question3">
+      <option value="">--Choose--</option>
+      <option value="Motherboard">Motherboard</option>
+      <option value="Hard Drive">Hard Drive</option>
+      <option value="RAM">RAM</option>
+    </select>
+    <div class="feedback" id="feedback3"></div>
+  </div>
+
+  <div class="question" id="q4">
+    <label for="question4">4. Which part is used to store long-term files?</label>
+    <select id="question4">
+      <option value="">--Choose--</option>
+      <option value="Hard Drive">Hard Drive</option>
+      <option value="RAM">RAM</option>
+      <option value="CPU">CPU</option>
+    </select>
+    <div class="feedback" id="feedback4"></div>
+  </div>
+
+  <div class="question" id="q5">
+    <label for="question5">5. Which part is often referred to as the 'brain' of the computer?</label>
+    <select id="question5">
+      <option value="">--Choose--</option>
+      <option value="CPU">CPU</option>
+      <option value="RAM">RAM</option>
+      <option value="Motherboard">Motherboard</option>
+    </select>
+    <div class="feedback" id="feedback5"></div>
+  </div>
+
+  <div class="question" id="q6">
+    <label for="question6">6. Which part provides electricity to all other components?</label>
+    <select id="question6">
+      <option value="">--Choose--</option>
+      <option value="Power Supply">Power Supply</option>
+      <option value="RAM">RAM</option>
+      <option value="Motherboard">Motherboard</option>
+    </select>
+    <div class="feedback" id="feedback6"></div>
+  </div>
+
+  <div class="question" id="q7">
+    <label for="question7">7. Which part temporarily holds data while programs run?</label>
+    <select id="question7">
+      <option value="">--Choose--</option>
+      <option value="RAM">RAM</option>
+      <option value="Hard Drive">Hard Drive</option>
+      <option value="CPU">CPU</option>
+    </select>
+    <div class="feedback" id="feedback7"></div>
+  </div>
+
+  <div class="question" id="q8">
+    <label for="question8">8. Which part manages communication between all hardware?</label>
+    <select id="question8">
+      <option value="">--Choose--</option>
+      <option value="Motherboard">Motherboard</option>
+      <option value="Power Supply">Power Supply</option>
+      <option value="Hard Drive">Hard Drive</option>
+    </select>
+    <div class="feedback" id="feedback8"></div>
+  </div>
+
+  <div id="passcode">Access Granted. Your passcode is: <strong>CYBER-4289</strong></div>
+
+  <audio id="chime" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" preload="auto"></audio>
+  <audio id="buzzer" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
+
+  <script>
+    const answers = {
+      question1: "RAM",
+      question2: "Power Supply",
+      question3: "Motherboard",
+      question4: "Hard Drive",
+      question5: "CPU",
+      question6: "Power Supply",
+      question7: "RAM",
+      question8: "Motherboard"
+    };
+
+    let correctCount = 0;
+
+    for (let i = 1; i <= 8; i++) {
+      const select = document.getElementById("question" + i);
+      select.addEventListener("change", function () {
+        checkAnswer(this, "feedback" + i, i);
+      });
+    }
+
+    function checkAnswer(selectElement, feedbackId, index) {
+      const selected = selectElement.value;
+      const correct = answers[selectElement.id];
+      const feedback = document.getElementById(feedbackId);
+      const chime = document.getElementById("chime");
+      const buzzer = document.getElementById("buzzer");
+
+      if (selected === correct) {
+        feedback.textContent = "✔ Correct!";
+        feedback.className = "feedback correct";
+        chime.play();
+        document.getElementById("q" + index).classList.remove("active");
+        correctCount++;
+        if (index < 8) {
+          document.getElementById("q" + (index + 1)).classList.add("active");
+        } else {
+          document.getElementById("passcode").style.display = "block";
+        }
+      } else {
+        feedback.textContent = "✖ Incorrect. Try again.";
+        feedback.className = "feedback incorrect";
+        buzzer.play();
+      }
+    }
+  </script>
+</body>
+</html>
